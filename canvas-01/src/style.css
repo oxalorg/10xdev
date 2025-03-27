@@ -1,0 +1,18 @@
+html {
+  color-scheme: light dark;
+  font-family: system-ui;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: white;
+}
+
+/* body { */
+/*     max-width: 800px; */
+/*     max-height: 800px; */
+/* } */
+
+canvas {
+    border: 1px solid red;
+}
