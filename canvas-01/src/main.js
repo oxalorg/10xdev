@@ -174,4 +174,38 @@ function ticker() {
   requestAnimationFrame(ticker)
 }
 
+let dragging= false;
+
+canvas.addEventListener("mousedown", (e) => {
+  let x = e.offsetX;
+  let y = e.offsetY;
+  for (let block of blocks) {
+    if (Math.abs(block.x - x) < block.radius && Math.abs(block.y - y) < block.radius) {
+      dragging = true;
+      block.dragging = true;
+      break;
+    }
+  }
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  let x = e.offsetX;
+  let y = e.offsetY;
+  if (dragging) {
+    for (let block of blocks) {
+      if (block.dragging) {
+        block.x = x;
+        block.y = y;
+      }
+    }
+  }
+});
+
+canvas.addEventListener("mouseup", (e) => {
+  dragging = false;
+  for (let block of blocks) {
+    block.dragging = false;
+  }
+});
+
 ticker();
