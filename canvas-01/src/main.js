@@ -75,6 +75,13 @@ let blocks = [
     y: 3*size/4,
     radius: size/30,
     color: "red",
+  },
+  {
+    id: "Block D",
+    x: size - size/3,
+    y: 2*size/4,
+    radius: size/30,
+    color: "pink",
   }
 ]
 function getBlock(id) {
@@ -93,13 +100,13 @@ function drawBlock(block) {
 }
 
 function drawGraph() {
-  let prevBlock = blocks[blocks.length - 1];
   for (const block of blocks) {
-    if (prevBlock) {
-      drawLine(prevBlock.x, prevBlock.y, block.x, block.y)
+    for (const block2 of blocks) {
+      if(block.id != block2.id) {
+        drawLine(block2.x, block2.y, block.x, block.y)
+      }
     }
     drawBlock(block);
-    prevBlock = block;
   }
 }
 
