@@ -1,0 +1,16 @@
+{
+  "name": "parcel-vanilla-starter",
+  "private": true,
+  "version": "0.0.0",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "konva": "^9.3.20"
+  },
+  "devDependencies": {
+    "parcel": "^2.14.0"
+  }
+}
