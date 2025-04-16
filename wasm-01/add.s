@@ -1,4 +1,3 @@
-	.text
 	.file	"add.c"
 	.globaltype	__stack_pointer, i32
 	.functype	add (i32, i32) -> (i32)
@@ -30,7 +29,7 @@ add:                                    # @add
                                         # fallthrough-return
 	end_function
                                         # -- End function
-	.ident	"Homebrew clang version 19.1.7"
+	.ident	"Homebrew clang version 20.1.2"
 	.section	.custom_section.producers,"",@
 	.int8	1
 	.int8	12
@@ -39,16 +38,28 @@ add:                                    # @add
 	.int8	14
 	.ascii	"Homebrew clang"
 	.int8	6
-	.ascii	"19.1.7"
+	.ascii	"20.1.2"
 	.section	.text.add,"",@
 	.section	.custom_section.target_features,"",@
-	.int8	4
+	.int8	8
+	.int8	43
+	.int8	11
+	.ascii	"bulk-memory"
+	.int8	43
+	.int8	15
+	.ascii	"bulk-memory-opt"
+	.int8	43
+	.int8	22
+	.ascii	"call-indirect-overlong"
 	.int8	43
 	.int8	10
 	.ascii	"multivalue"
 	.int8	43
 	.int8	15
 	.ascii	"mutable-globals"
+	.int8	43
+	.int8	19
+	.ascii	"nontrapping-fptoint"
 	.int8	43
 	.int8	15
 	.ascii	"reference-types"
