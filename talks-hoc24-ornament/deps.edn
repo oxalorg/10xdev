@@ -1,0 +1,6 @@
+{:paths ["src"]
+ :deps {com.lambdaisland/ornament {:local/root "../../projects/ornament"}
+        com.lambdaisland/hiccup   {:mvn/version "0.10.51"}
+        }
+ :aliases {:dev {}}
+ }

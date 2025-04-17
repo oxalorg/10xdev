@@ -1,0 +1,78 @@
+.wow-ornament-is-amazing_trust-me__freebies_link {
+  font-size: 1rem;
+  color: #cff9cf;
+  text-decoration: underline;
+}
+
+.wow-ornament-is-amazing_trust-me__tailwind_is_good_too {
+  display: flex;
+  --gi-bg-opacity: 1;
+  background-color: rgba(254,226,226,var(--gi-bg-opacity));
+  --gi-text-opacity: 1;
+  color: rgba(22,101,52,var(--gi-text-opacity));
+}
+
+.wow-ornament-is-amazing_trust-me__page_grid {
+  position: relative;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+
+  .wow-ornament-is-amazing_trust-me__page_grid {
+    display: flex;
+  }
+
+}
+
+.wow-ornament-is-amazing_trust-me__page_grid >.content {
+  flex: 1 1 0%;
+  padding: 0.5rem;
+  --gi-bg-opacity: 1;
+  background-color: rgba(244,244,245,var(--gi-bg-opacity));
+}
+
+@media (min-width: 768px) {
+
+  .wow-ornament-is-amazing_trust-me__page_grid >.content {
+    padding: 2.5rem;
+  }
+
+}
+
+.wow-ornament-is-amazing_trust-me__referenced {
+  color: blue;
+}
+
+.wow-ornament-is-amazing_trust-me__referer .wow-ornament-is-amazing_trust-me__referenced {
+  color: red;
+}
+
+.wow-ornament-is-amazing_trust-me__referer .foo {
+  color: blue;
+}
+
+.wow-ornament-is-amazing_trust-me__menu {
+  padding: 2rem;
+}
+
+.wow-ornament-is-amazing_trust-me__menu a {
+  color: blue;
+}
+
+.wow-ornament-is-amazing_trust-me__menu:hover {
+  background-color: #888;
+}
+
+.wow-ornament-is-amazing_trust-me__eps_container {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+@media (min-width: 40rem) {
+
+  .wow-ornament-is-amazing_trust-me__eps_container {
+    grid-gap: 2rem;
+  }
+
+}
