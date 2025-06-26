@@ -1,1 +1,4 @@
 *.beam
+node_modules/
+.parcel-cache/
+.aider*

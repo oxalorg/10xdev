@@ -1,10 +1,34 @@
 (ns persistent-queue)
 
-(deftype Queue [cnt front rear]
-  clojure.lang.Seqable
-  (seq [_] (seq front))
 
-  ;; peek
+;; clojure.lang.PersistentQueue/EMPTY
+
+(defn ->seq [q]
+  (loop [])
+  )
+
+(deftype Queue [cnt front rear]
+  clojure.lang.ISeq
+  (next [_]
+    (let [front* (seq front)
+          rear* (seq rear)]
+      (cond
+        (and (not front*)
+             (not rear*))
+        nil
+
+        front*
+        (first front*)
+
+        rear*
+        (first rear*)
+
+        :else
+        nil)))
+
+  ;; clojure.lang.Seqable
+  ;; (seq [_] ())
+
   clojure.lang.IPersistentStack
   (peek [_] (first front))
   (pop [this]
@@ -39,8 +63,6 @@
 
   (empty [_] nil)
   (equiv [_ o] false)
-
-
   )
 
 
@@ -51,10 +73,12 @@
   (Queue. 0 '() []))
 
 (-> (queue)
-    (conj 1 2 3 4)
+    (conj 1 2 3 4 5 6)
     pop
     pop
-    (conj 1 2 3 4))
+    pop
+    (conj 1 2 3 4 5)
+    )
 
 (comment
   (defn supers-lineage [class]
@@ -64,7 +88,7 @@
             (bases class)))
 
   ;; find nested super classes of PersistentVector
-  (supers-lineage (type []))
+  (supers-lineage (type '()))
 
   (isa? (type []) clojure.lang.Sequential)
 
