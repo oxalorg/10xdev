@@ -3,54 +3,60 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
-#define PORT 8080
+#define BACKLOG 20
 #define BUFFER_SIZE 1024
 
+int socket_create(int family, int socktype, int protocol) {
+  int sockfd = socket(family, socktype, protocol);
+  if (sockfd <= 0) {
+    perror("Could not setup a tcp socket");
+    exit(EXIT_FAILURE);
+  }
+  return sockfd;
+}
+
+int socket_server_listen(char *port) {
+  struct addrinfo hints, *result;
+  memset(&hints, 0, sizeof hints);
+  // TODO: only IPV4 for now, add IPV6 later
+  hints.ai_family = AF_INET;
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_flags = AI_PASSIVE;
+  getaddrinfo(NULL, port, &hints, &result);
+
+  int sockfd = socket_create(result->ai_family, result->ai_socktype, result->ai_protocol);
+  if (bind(sockfd, result->ai_addr, result->ai_addrlen) == -1) {
+    perror("Could not bind");
+    exit(EXIT_FAILURE);
+  }
+
+  if (listen(sockfd, BACKLOG) == -1) {
+    perror("Could not listen");
+    exit(EXIT_FAILURE);
+  }
+  printf("Listening on port %s\n", port);
+  fflush(stdout);
+  return sockfd;
+}
+
 int main() {
-    int server_fd, new_socket;
-    struct sockaddr_in address;
-    int addrlen = sizeof(address);
     char buffer[BUFFER_SIZE] = {0};
-    const char *response = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world";
+    const char *response = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 13\n\nHello world";
+    int server_fd = socket_server_listen("7123");
 
-    // Creating socket file descriptor
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
-        perror("socket failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // Forcefully attaching socket to the port 8080
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(PORT);
-
-    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
-        perror("bind failed");
-        close(server_fd);
-        exit(EXIT_FAILURE);
-    }
-
-    if (listen(server_fd, 3) < 0) {
-        perror("listen");
-        close(server_fd);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Listening on port %d\n", PORT);
-
-    while (1) {
-        if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
-            perror("accept");
-            close(server_fd);
-            exit(EXIT_FAILURE);
-        }
-
-        read(new_socket, buffer, BUFFER_SIZE);
-        printf("Received request:\n%s\n", buffer);
-        write(new_socket, response, strlen(response));
-        close(new_socket);
-    }
+    while(1) {
+      struct sockaddr_storage their_addr;
+      socklen_t addr_size = sizeof their_addr;
+      int incoming_fd = accept(server_fd, (struct sockaddr *)&their_addr, (socklen_t *)&addr_size);
+      read(incoming_fd, buffer, BUFFER_SIZE);
+      printf("Received request:\n%s\n", buffer);
+      write(incoming_fd, response, strlen(response));
+      close(incoming_fd);
+    };
 
     return 0;
 }
