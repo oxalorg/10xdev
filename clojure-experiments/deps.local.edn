@@ -1,0 +1,4 @@
+{
+ :launchpad/aliases [:dev :default-nrepl]
+ :launchpad/options {:emacs true}
+ }
