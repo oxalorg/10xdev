@@ -15,22 +15,44 @@
 ;; `rate` = some unit of value to fill every ttl
 ;; we empty the bucket every
 (defprotocol Bucket
-  (get [_])
-  (inc! [_])
-  (dec! [_]))
+  (current-tokens [_] "Get the current number of tokens in the bucket")
+  (inc! [_] "Add one token to the bucket")
+  (dec! [_] "Remove one token from the bucket"))
 
 (defrecord InMemoryBucket [!agent]
   Bucket
-  (get [_]
+  (current-tokens [_]
     @!agent)
   (inc! [_]
     (send !agent inc))
   (dec! [_]
     (send !agent dec)))
 
-(def !a (agent 0))
-(def bucket (InMemoryBucket. !a))
+(defn can-process-request? [bucket]
+  "Returns true if there are tokens available for processing"
+  (pos? (current-tokens bucket)))
 
-(inc! bucket)
-(dec! bucket)
-(get bucket)
+(comment
+  (def my-agent (agent 0))
+  (def my-bucket (InMemoryBucket. my-agent))
+  (current-tokens my-bucket) ; => 0
+  (inc! my-bucket)
+  (inc! my-bucket)
+  (await my-agent)
+  (current-tokens my-bucket) ; => 2
+  (dec! my-bucket)
+  (await my-agent)
+  (current-tokens my-bucket) ; => 1
+
+  ;; Usage:
+  (def rate-limiter (InMemoryBucket. (agent 5))) ; Start with 5 tokens
+  (current-tokens rate-limiter) ; => 4
+
+  (def !a (agent 0))
+  (def bucket (InMemoryBucket. !a))
+
+  (inc! bucket)
+  (dec! bucket)
+  (current-tokens bucket)
+
+  )
