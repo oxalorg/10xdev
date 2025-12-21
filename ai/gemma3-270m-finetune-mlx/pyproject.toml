@@ -1,0 +1,7 @@
+[project]
+name = "gemma3-270m-finetune-mlx"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
